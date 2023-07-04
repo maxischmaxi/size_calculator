@@ -1,21 +1,24 @@
-from os import listdir, getcwd, stat
-from os.path import isfile, join, isdir
+from os import listdir, getcwd
+from os.path import isfile, join, isdir, getsize
 
-def get_file_size(path):
-  size = stat(path).st_size
-  # calculate if the size is in KB, MB or GB
-  if size < 1024:
-    # return the size in bytes
-    return str(size) + " B"
-  elif size < 1024 * 1024:
-    # return the size in kilobytes
-    return str(round(size / 1024, 2)) + " KB"
-  elif size < 1024 * 1024 * 1024:
-    # return the size in megabytes
-    return str(round(size / (1024 * 1024), 2)) + " MB"
+def get_size(file_path):
+  file_size = getsize(file_path)
+  unit = 'bytes'
+
+  if file_size > 1024:
+    unit = 'kb'
+  elif file_size > 1024 ** 2:
+    unit = 'mb'
+  elif file_size > 1024 ** 3:
+    unit = 'gb'
+
+  exponents_map = {'bytes': 0, 'kb': 1, 'mb': 2, 'gb': 3}
+  size = file_size / 1024 ** exponents_map[unit]
+
+  if unit == 'bytes':
+    return str(file_size) + " " + unit
   else:
-    # return the size in gigabytes
-    return str(round(size / (1024 * 1024 * 1024), 2)) + " GB"
+    return round(size, 3).__str__() + " " + unit
 
 def get_files_of_folder(path):
     files = listdir(path)
@@ -23,7 +26,7 @@ def get_files_of_folder(path):
     
     for file in files:
       if isfile(join(path, file)):
-        returning_files.append((file, join(path, file), get_file_size(join(path, file))))
+        returning_files.append((file, join(path, file), get_size(join(path, file))))
       elif isdir(join(path, file)):
         appending_files = get_files_of_folder(join(path, file))
         for appending_file in appending_files:
