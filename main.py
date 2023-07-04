@@ -42,6 +42,18 @@ if __name__ == '__main__':
     files = get_files_of_folder(cwd)
     # sort files by size
     files.sort(key=lambda x: x[2], reverse=True)
-    #print the files with their size
-    for file in files:
-      print(file[0] + " - " + str(file[2]))
+
+    print("Filename".ljust(50, " ") + "Size")
+    print("-" * 60)
+
+    if len(files) <= 10:
+      #print the files with their size
+      for file in files:
+        # print the file name and the size with the name as a fixed length
+        print(file[0].ljust(50, " ") +  file[2])
+    else:
+      #print the 10 biggest files with their size
+      for i in range(10):
+        # print the file name and the size with the name as a fixed length
+        print(files[i][0].ljust(50, " ") + files[i][2])
+    

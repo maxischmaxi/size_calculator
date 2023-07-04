@@ -19,3 +19,10 @@ Move to the directory you want to calculate the size of and run the following co
 ```bash
 $ size_calculator
 ```
+
+## Uninstall
+
+```bash
+$ chmod +x uninstall_size_calculator.sh
+$ sudo ./uninstall_size_calculator.sh
+```
