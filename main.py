@@ -1,23 +1,19 @@
 from os import listdir, getcwd
 from os.path import isfile, join, isdir, getsize
 
-def get_size(file_size):
+def get_size(file_size: int):
   unit = 'Bytes'
 
-  if file_size > 1024:
+  if file_size > 1024 and file_size < 1024 ** 2:
     unit = 'KB'
-  elif file_size > 1024 ** 2:
+  elif file_size > 1024 ** 2 and file_size < 1024 ** 3:
     unit = 'MB'
-  elif file_size > 1024 ** 3:
+  elif file_size > 1024 ** 3 and file_size < 1024 ** 4:
     unit = 'GB'
-
-  exponents_map = {'Bytes': 0, 'KB': 1, 'MB': 2, 'GB': 3}
-  size = file_size / 1024 ** exponents_map[unit]
-
-  if unit == 'Bytes':
-    return str(file_size) + " " + unit
   else:
-    return round(size, 3).__str__() + " " + unit
+    unit = 'TB'
+
+  return str(round(file_size / (1024 ** (['Bytes', 'KB', 'MB', 'GB', 'TB'].index(unit))), 2)) + ' ' + unit
 
 def get_files_of_folder(path):
     files = listdir(path)
